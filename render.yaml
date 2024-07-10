@@ -3,5 +3,5 @@ services:
     name: skin-disease-detector
     env: python
     buildCommand: ""
-    startCommand: web: gunicorn --timeout 120 --workers 3 app:app
+    startCommand: web: gunicorn -w 2 -k sync app:app
     plan: free
