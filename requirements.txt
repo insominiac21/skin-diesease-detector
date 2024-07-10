@@ -1,5 +1,4 @@
 Flask
-tensorflow
-pillow
-numpy
 gunicorn
+tensorflow
+Pillow
