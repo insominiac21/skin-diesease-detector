@@ -10,7 +10,13 @@ MODEL_PATH = 'path_to_your_trained_model.h5'
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # Load the trained model
-model = tf.keras.models.load_model(MODEL_PATH)
+# Load the model lazily in the route handler
+model = None
+
+def load_model():
+    global model
+    if model is None:
+        model = tf.keras.models.load_model(MODEL_PATH)
 
 def preprocess_image(image):
     """Preprocess the image to the format required by the model."""
@@ -38,6 +44,9 @@ def upload():
         # Open the image file
         image = Image.open(filepath)
         preprocessed_image = preprocess_image(image)
+
+        # Load the model lazily
+        load_model()
 
         # Predict using the model
         prediction = model.predict(preprocessed_image)
