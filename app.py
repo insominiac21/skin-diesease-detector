@@ -19,7 +19,7 @@ def preprocess_image(image):
 # Define a route for health check
 @app.route('/')
 def health_check():
-    return 'API is running!'
+    return 'API is running! yuo nigga'
 
 # Define a route for prediction
 @app.route('/predict', methods=['POST'])
