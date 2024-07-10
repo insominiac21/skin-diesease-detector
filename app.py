@@ -1,67 +1,56 @@
-from flask import Flask, request, jsonify, render_template
-from tensorflow.keras.models import load_model
+from flask import Flask, request, send_file, render_template, jsonify
+import os
 from PIL import Image
 import numpy as np
-import logging
-import os
+import tensorflow as tf
 
 app = Flask(__name__)
+UPLOAD_FOLDER = 'uploads'
+MODEL_PATH = 'path_to_your_trained_model.h5'
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-# Configure logging
-logging.basicConfig(level=logging.INFO)
+# Load the trained model
+model = tf.keras.models.load_model(MODEL_PATH)
 
-# Load your trained model
-try:
-    model = load_model('path_to_your_trained_model.h5')  # Replace with the actual path to your saved model
-    logging.info("Model loaded successfully.")
-except Exception as e:
-    logging.error(f"Error loading model: {e}")
-    raise
-
-label_to_id = {'nv': 0, 'mel': 1, 'bkl': 2, 'bcc': 3, 'akiec': 4, 'vasc': 5, 'df': 6}  # Replace with your actual labels and IDs
+# Define the label mappings
+label_to_id = {'nv': 0, 'mel': 1, 'bkl': 2, 'bcc': 3, 'akiec': 4, 'vasc': 5, 'df': 6}
 id_to_label = {v: k for k, v in label_to_id.items()}
 
-# Function to preprocess images
 def preprocess_image(image):
-    try:
-        image = Image.open(image).convert('RGB')
-        image = image.resize((224, 224))
-        image = np.array(image) / 255.0
-        image = np.expand_dims(image, axis=0)
-        logging.info("Image preprocessed successfully.")
-        return image
-    except Exception as e:
-        logging.error(f"Error processing image: {e}")
-        return None
+    """Preprocess the image to the format required by the model."""
+    image = image.resize((224, 224))  # Assuming the model requires 224x224 input size
+    image = np.array(image)
+    image = image / 255.0  # Normalize to [0, 1] range
+    image = np.expand_dims(image, axis=0)  # Add batch dimension
+    return image
 
 @app.route('/')
-def upload_file():
+def index():
     return render_template('index.html')
 
-@app.route('/predict', methods=['POST'])
-def predict():
+@app.route('/upload', methods=['POST'])
+def upload():
     if 'file' not in request.files:
-        logging.error("No file part in request.")
         return jsonify({'error': 'No file part'}), 400
-    
     file = request.files['file']
     if file.filename == '':
-        logging.error("No file selected.")
         return jsonify({'error': 'No selected file'}), 400
+    if file:
+        filepath = os.path.join(UPLOAD_FOLDER, file.filename)
+        file.save(filepath)
 
-    try:
-        image = preprocess_image(file.stream)
-        if image is not None:
-            prediction = model.predict(image)
-            predicted_label = id_to_label[np.argmax(prediction)]
-            logging.info(f"Prediction successful: {predicted_label}")
-            return jsonify({'prediction': predicted_label}), 200
-        else:
-            logging.error("Failed to process image.")
-            return jsonify({'error': 'Failed to process image'}), 400
-    except Exception as e:
-        logging.error(f"Prediction error: {e}")
-        return jsonify({'error': str(e)}), 500
+        # Open the image file
+        image = Image.open(filepath)
+        preprocessed_image = preprocess_image(image)
+
+        # Predict using the model
+        prediction = model.predict(preprocessed_image)
+        predicted_class = np.argmax(prediction, axis=1)[0]
+
+        # Map the predicted class to the corresponding label
+        result = id_to_label[predicted_class]
+
+        return jsonify({'prediction': result})
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(host='0.0.0.0', port=5000)
