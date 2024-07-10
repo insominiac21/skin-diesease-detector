@@ -3,6 +3,7 @@ from tensorflow.keras.models import load_model
 from PIL import Image
 import numpy as np
 import logging
+import os
 
 app = Flask(__name__)
 
@@ -30,7 +31,7 @@ def preprocess_image(image):
         logging.info("Image preprocessed successfully.")
         return image
     except Exception as e:
-        logging.error(f"Error loading image: {e}")
+        logging.error(f"Error processing image: {e}")
         return None
 
 @app.route('/')
@@ -63,4 +64,4 @@ def predict():
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(debug=False)  # Ensure debug is False in production
+    app.run(debug=False)
