@@ -1,0 +1,1 @@
+# skin-diesease-detector
