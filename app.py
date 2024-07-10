@@ -33,7 +33,6 @@ def preprocess_image(image):
         logging.error(f"Error loading image: {e}")
         return None
 
-# Route to handle image upload and prediction
 @app.route('/')
 def upload_file():
     return render_template('index.html')
