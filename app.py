@@ -10,15 +10,17 @@ st.write("📁 Files in working directory:", os.listdir(os.getcwd()))
 # 🧠 Rebuild the model architecture to match the saved weights (6 layers)
 def build_model():
     model = tf.keras.Sequential([
-        tf.keras.layers.InputLayer(input_shape=(224, 224, 3)),
-        tf.keras.layers.Conv2D(32, (3, 3), activation='relu', name='conv1'),
-        tf.keras.layers.MaxPooling2D((2, 2)),
-        tf.keras.layers.Conv2D(64, (3, 3), activation='relu', name='conv2'),
-        tf.keras.layers.MaxPooling2D((2, 2)),
-        tf.keras.layers.Flatten(),
-        tf.keras.layers.Dense(7, activation='softmax', name='output')  # Adjust if needed
+        tf.keras.layers.InputLayer(input_shape=(224, 224, 3)),           # Layer 1
+        tf.keras.layers.Conv2D(32, (3, 3), activation='relu', name='conv1'),  # Layer 2
+        tf.keras.layers.MaxPooling2D((2, 2)),                            # Layer 3
+        tf.keras.layers.Conv2D(64, (3, 3), activation='relu', name='conv2'),  # Layer 4
+        tf.keras.layers.MaxPooling2D((2, 2)),                            # Layer 5
+        tf.keras.layers.Flatten(),                                      # Layer 6
+        tf.keras.layers.Dense(7, activation='softmax', name='output')   # Final output layer
     ])
     return model
+
+
 
 # 📦 Load weights into the rebuilt model
 @st.cache_resource
