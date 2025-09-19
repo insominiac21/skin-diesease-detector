@@ -2,12 +2,15 @@ import streamlit as st
 import tensorflow as tf
 from PIL import Image, ImageOps
 import numpy as np
+import os
+import streamlit as st
 
-# Load the model
 @st.cache_resource
 def load_model():
-    model = tf.keras.models.load_model('model.h5')
+    model_path = os.path.join(os.path.dirname(__file__), 'model.h5')
+    model = tf.keras.models.load_model(model_path)
     return model
+
 
 model = load_model()
 
