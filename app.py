@@ -5,10 +5,11 @@ import numpy as np
 import os
 import streamlit as st
 
-st.write("Files in directory:", os.listdir(os.path.dirname(__file__)))
+
+st.write("Files in directory:", os.listdir(os.getcwd()))
 @st.cache_resource
 def load_model():
-    model_path = os.path.join(os.path.dirname(__file__), 'model.h5')
+    model_path = os.path.join(os.getcwd(), 'model.h5')
     model = tf.keras.models.load_model(model_path)
     return model
 
