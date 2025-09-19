@@ -6,7 +6,9 @@ import os
 
 # 🔍 Show working directory contents
 st.write("📁 Files in working directory:", os.listdir(os.getcwd()))
+
 st.write("✅ model.h5 exists:", os.path.exists("model.h5"))
+st.write("📦 model.h5 size:", os.path.getsize("model.h5") / (1024 * 1024), "MB")
 # 🧠 Rebuild the model architecture to match the saved weights (6 layers)
 def build_model():
     model = tf.keras.Sequential([
