@@ -10,7 +10,7 @@ import os
 
 st.set_page_config(page_title="Skin Disease Prediction", layout="centered")
 
-st.title("🩺 Skin Disease Prediction App (Updated architecture)")
+st.title("🩺 Skin Disease Prediction App ")
 
 
 
