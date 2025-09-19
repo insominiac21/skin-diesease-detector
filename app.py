@@ -4,14 +4,30 @@ from PIL import Image, ImageOps
 import numpy as np
 import os
 
-# 🔍 Debug: Show current directory contents
+# 🔍 Show working directory contents
 st.write("📁 Files in working directory:", os.listdir(os.getcwd()))
 
-# ✅ Load full model (architecture + weights)
+# 🧠 Rebuild the model architecture to match the saved weights
+def build_model():
+    model = tf.keras.Sequential([
+        tf.keras.layers.InputLayer(input_shape=(224, 224, 3)),
+        tf.keras.layers.Conv2D(32, (3, 3), activation='relu', name='stem_conv'),
+        tf.keras.layers.MaxPooling2D((2, 2)),
+        tf.keras.layers.Conv2D(64, (3, 3), activation='relu'),
+        tf.keras.layers.MaxPooling2D((2, 2)),
+        tf.keras.layers.Flatten(),
+        tf.keras.layers.Dense(128, activation='relu'),
+        tf.keras.layers.Dense(7, activation='softmax')  # Adjust if you have a different number of classes
+    ])
+    return model
+
+# 📦 Load weights into the rebuilt model
 @st.cache_resource
 def load_model():
     model_path = os.path.join(os.getcwd(), 'model.h5')
-    return tf.keras.models.load_model(model_path)
+    model = build_model()
+    model.load_weights(model_path)
+    return model
 
 model = load_model()
 
