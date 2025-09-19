@@ -17,13 +17,12 @@ model = load_model()
 # Preprocess the image
 def preprocess_image(image):
     size = (224, 224)
-    image = image.convert("L")  # Convert to grayscale
+    image = image.convert("RGB")  # Ensure 3 channels
     image = ImageOps.fit(image, size, Image.LANCZOS)
     image_array = np.asarray(image)
     normalized_image_array = image_array.astype(np.float32) / 255.0
-    reshaped_image = normalized_image_array.reshape(1, 224, 224, 1)  # 1 channel
+    reshaped_image = normalized_image_array.reshape(1, 224, 224, 3)
     return reshaped_image
-
 # Create the Streamlit app
 st.title("Skin Disease Prediction App")
 
