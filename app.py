@@ -20,8 +20,6 @@ def build_model():
     ])
     return model
 
-
-
 # 📦 Load weights into the rebuilt model
 @st.cache_resource
 def load_model():
