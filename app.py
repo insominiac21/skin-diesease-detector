@@ -48,7 +48,7 @@ def load_model(model_path='model.h5'):
 # Try loading the model (wrapped to show friendly error in UI)
 try:
     model = load_model('model.h5')
-    st.success("Model loaded successfully.")
+    
 except Exception as e:
     st.error(f"Could not load model: {e}")
     model = None
