@@ -5,7 +5,7 @@ import numpy as np
 import os
 
 # 🔍 Debug: Show current directory contents
-#st.write("📁 Files in working directory:", os.listdir(os.getcwd()))
+st.write("📁 Files in working directory:", os.listdir(os.getcwd()))
 
 # ✅ Load full model (architecture + weights)
 @st.cache_resource
