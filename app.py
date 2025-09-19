@@ -68,7 +68,7 @@ def preprocess_image(pil_img, target_size):
 # ---- Try to load model and show status ----
 try:
     model = load_densenet_model(MODEL_FILENAME)
-    st.success("Model loaded.")
+    
 except Exception as e:
     st.error("Could not load model:")
     st.error(str(e))
