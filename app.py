@@ -12,15 +12,7 @@ st.set_page_config(page_title="Skin Disease Prediction", layout="centered")
 
 st.title("🩺 Skin Disease Prediction App (Updated architecture)")
 
-# Show working directory contents (helpful for debugging model path issues)
-st.subheader("Working directory contents")
-cwd = os.getcwd()
 
-try:
-    files = os.listdir(cwd)
-    st.write(files)
-except Exception as e:
-    st.write("Could not list directory:", e)
 
 # Rebuild the CNN architecture from the uploaded notebook
 def build_model(input_shape=(75, 100, 3), num_classes=7):
