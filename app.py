@@ -5,6 +5,7 @@ import numpy as np
 import os
 import streamlit as st
 
+st.write("Files in directory:", os.listdir(os.path.dirname(__file__)))
 @st.cache_resource
 def load_model():
     model_path = os.path.join(os.path.dirname(__file__), 'model.h5')
