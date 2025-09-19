@@ -9,16 +9,23 @@ st.write("📁 Files in working directory:", os.listdir(os.getcwd()))
 
 st.write("✅ model.h5 exists:", os.path.exists("model.h5"))
 st.write("📦 model.h5 size:", os.path.getsize("model.h5") / (1024 * 1024), "MB")
+
+import h5py
+
+with h5py.File("model.h5", "r") as f:
+    print("Saved layers:")
+    for layer in f["model_weights"]:
+        print(layer)
 # 🧠 Rebuild the model architecture to match the saved weights (6 layers)
 def build_model():
     model = tf.keras.Sequential([
         tf.keras.layers.InputLayer(input_shape=(224, 224, 3)),           # Layer 1
-        tf.keras.layers.Conv2D(32, (3, 3), activation='relu', name='conv1'),  # Layer 2
+        tf.keras.layers.Conv2D(32, (3, 3), activation='relu'),           # Layer 2
         tf.keras.layers.MaxPooling2D((2, 2)),                            # Layer 3
-        tf.keras.layers.Conv2D(64, (3, 3), activation='relu', name='conv2'),  # Layer 4
+        tf.keras.layers.Conv2D(64, (3, 3), activation='relu'),           # Layer 4
         tf.keras.layers.MaxPooling2D((2, 2)),                            # Layer 5
-        tf.keras.layers.Flatten(),                                      # Layer 6
-        tf.keras.layers.Dense(7, activation='softmax', name='output')   # Final output layer
+        tf.keras.layers.Flatten(),                                       # Layer 6
+        tf.keras.layers.Dense(7, activation='softmax')                   # Output layer
     ])
     return model
 
