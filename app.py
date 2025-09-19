@@ -15,7 +15,7 @@ st.title("🩺 Skin Disease Prediction App (Updated architecture)")
 # Show working directory contents (helpful for debugging model path issues)
 st.subheader("Working directory contents")
 cwd = os.getcwd()
-st.write(cwd)
+
 try:
     files = os.listdir(cwd)
     st.write(files)
